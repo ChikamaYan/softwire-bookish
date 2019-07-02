@@ -44,3 +44,18 @@ CREATE TABLE borrowed
     FOREIGN KEY (bookID) REFERENCES books (bookID),
     FOREIGN KEY (userID) REFERENCES users (userID)
 );
+
+INSERT INTO bookInfo
+VALUES (123456, 'test book title', 'walter', 'test');
+
+INSERT INTO bookInfo
+VALUES (123457, 'hello world', 'walter', 'test');
+
+INSERT INTO books
+VALUES (1000, 123456);
+
+INSERT INTO users
+VALUES (11,'walter');
+
+INSERT INTO borrowed
+VALUES (1000,11,TO_DATE('03/07/2019','DD/MM/YYYY'))
