@@ -1,0 +1,27 @@
+{
+  "name": "softwire-bookish",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "script": "tsc && node ./build/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChikamaYan/softwire-bookish.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChikamaYan/softwire-bookish/issues"
+  },
+  "homepage": "https://github.com/ChikamaYan/softwire-bookish#readme",
+  "dependencies": {
+    "@types/node": "^12.0.10",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "pgpromise": "^0.1.1"
+  }
+}
