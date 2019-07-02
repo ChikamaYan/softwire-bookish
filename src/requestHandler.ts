@@ -8,14 +8,10 @@ import * as pg from "pg-promise/typescript/pg-subset";
 
 export class RequestHandler {
     db;
-    users: User[];
-    books: Book[];
 
     constructor(uri) {
         this.db = pgpDB(uri);
-        this.books = [];
     }
-
 
     async requestUsers(): Promise<User[]> {
         try {
@@ -30,7 +26,6 @@ export class RequestHandler {
             console.log(e);
         }
     }
-
 
     async requestBooks(): Promise<Book[]> {
         try {
