@@ -1,21 +1,25 @@
 import {Router} from "express";
-import {RequestHandler} from "../requestHandler";
-
-import * as passport from "passport";
-import * as passportJwt from 'passport-jwt';
 import * as jwt from "jsonwebtoken";
+import {CookieHandler} from "./cookieHandler";
+import * as passport from "passport";
 
 const loginData = require("./../../data/login");
-
-let JwtStrategy = passportJwt.Strategy;
 let SECRET_KEY = "perfect key";
 
 export class LoginController {
     router: any;
+    private cookieHandler: CookieHandler;
 
     constructor() {
         this.router = Router();
+        this.cookieHandler = new CookieHandler();
+        this.cookieHandler.setStrategy(passport, SECRET_KEY);
         this.router.get("/login", this.verify.bind(this));
+        this.router.get("/status", passport.authenticate('jwt', {session: false}), this.getStatus.bind(this));
+    }
+
+    getStatus(req, res, next) {
+        res.send(req.user);
     }
 
     verify(req, res, next) {
@@ -24,7 +28,12 @@ export class LoginController {
             token = jwt.sign({username: req.query.username}, SECRET_KEY);
             // console.log(token);
         }
-        res.send(token);
+        let response = null;
+        if (token !== "Invalid") {
+            response = req.query.username;
+        }
+        res.cookie("jwt", token, {maxAge: 900000}).send(response);
+
     }
 
     verifyUser(username, password) {

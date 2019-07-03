@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "script": "tsc && node ./build/app.js"
+    "script": "tsc && node ./build/app.js",
+    "addBooks": "tsc ./src/addBooks.ts && node ./src/addBooks.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "homepage": "https://github.com/ChikamaYan/softwire-bookish#readme",
   "dependencies": {
     "@types/node": "^12.0.10",
+    "csv-parser": "^2.3.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",

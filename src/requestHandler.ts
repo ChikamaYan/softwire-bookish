@@ -4,7 +4,6 @@ const pgpDB = pgp();
 
 import {Book} from "./book";
 import {User} from "./user";
-import * as pg from "pg-promise/typescript/pg-subset";
 
 export class RequestHandler {
     db;

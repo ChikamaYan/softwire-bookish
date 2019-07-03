@@ -55,11 +55,19 @@ INSERT INTO books
 VALUES (1001, 123456);
 
 INSERT INTO users
-VALUES (11, 'walter');
+VALUES (20, 'soma');
 
 INSERT INTO borrowed
-VALUES (1000, 11, TO_DATE('03/07/2019', 'DD/MM/YYYY'));
+VALUES (1674, 20, TO_DATE('23/06/2019', 'DD/MM/YYYY'));
 
 SELECT b.bookID, b.ISBN, bi.title, bi.author, bi.catalogue, br.userID, br.returnDate
-FROM books b LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN LEFT JOIN borrowed br on b.bookID = br.bookID
+FROM books b LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN LEFT JOIN borrowed br on b.bookID = br.bookID;
 
+SELECT *
+FROM bookInfo;
+
+SELECT *
+FROM books;
+
+DELETE FROM books
+WHERE ISBN ISNULL

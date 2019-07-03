@@ -9,12 +9,38 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body onload="checkLoginStatus()">
 <div class="main">
     <div class="login">
         <input class="username" id="username" placeholder="Username">
         <input class="password" id="password" placeholder="Password">
         <input class="submit" type="button" id="login" value="Submit" onclick="login()">
+    </div>
+    <div>
+        <h1 id="loginMessage">
+            Not logged in
+        </h1>
+
+    </div>
+
+    <div class="endpoints">
+        <input type="button" value="book/allBook" onclick="allBooks()">
+        <input type="button" value="book/borrowedBook"
+               onclick="borrowedBooks()"><br>
+    </div>
+
+    <div>
+        <input class="title" id="title" placeholder="Title">
+        <input class="submit" type="button" id="titleList" value="Submit" onclick="searchTitle()">
+        <br>
+        <input class="title" id="author" placeholder="Author">
+        <input class="submit" type="button" id="authorList" value="Submit" onclick="searchAuthor()">
+    </div>
+
+    <div class="result">
+        <p id="result">
+            No result yet
+        </p>
     </div>
 </div>
 </body>
