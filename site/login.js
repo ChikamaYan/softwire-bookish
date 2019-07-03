@@ -23,6 +23,11 @@ function login() {
     xhttp.send();
 }
 
+function logout() {
+    outputWelcome("Logged out!");
+    document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+}
+
 function checkLoginStatus() {
     let xhttp = new XMLHttpRequest();
 
