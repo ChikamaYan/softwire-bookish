@@ -10,7 +10,7 @@ function login() {
     xhttp.onreadystatechange = function () {
         let token = xhttp.responseText;
         console.log(token);
-        document.cookie = `jwt=${token}`;
+        document.cookie = `${token}`;
         window.location.replace("http://localhost:3000/book");
     };
 
