@@ -17,11 +17,13 @@ export class BookController {
         this.cookieHandler = new CookieHandler();
         this.cookieHandler.setStrategy(passport, SECRET_KEY);
         this.router = Router();
-        this.router.get("/allBook", passport.authenticate('jwt', {session: false}), this.getAllBook.bind(this));
-        this.router.get("/borrowedBook", passport.authenticate('jwt', {session: false}), this.getBorrowedBook.bind(this));
-        this.router.get("/searchByTitle", passport.authenticate('jwt', {session: false}), this.searchByTitle.bind(this));
-        this.router.get("/searchByAuthor", passport.authenticate('jwt', {session: false}), this.searchByAuthor.bind(this));
-        this.router.post("/addBook", passport.authenticate('jwt', {session: false}), this.addBook.bind(this));
+        let auth = passport.authenticate('jwt', {session: false});
+        this.router.get("/allBook", auth, this.getAllBook.bind(this));
+        this.router.get("/borrowedBook", auth, this.getBorrowedBook.bind(this));
+        this.router.get("/searchByTitle", auth, this.searchByTitle.bind(this));
+        this.router.get("/searchByAuthor", auth, this.searchByAuthor.bind(this));
+        this.router.get("/searchByISBN", auth, this.searchByISBN.bind(this));
+        this.router.post("/addBook", auth, this.addBook.bind(this));
 
     }
 
@@ -38,7 +40,7 @@ export class BookController {
     }
 
     addBook(req, res, next) {
-        this.handler.addBook(parseInt(req.query.isbn), req.query.title, req.query.author, req.query.catalogue).then(() => {
+        this.handler.addBook(parseInt(req.body.isbn), req.body.title, req.body.author, req.body.catalogue).then(() => {
             res.send("Successfully add the book!");
         });
     }
@@ -48,6 +50,18 @@ export class BookController {
             let results: Book[] = [];
             for (let b of books) {
                 if (b.author.includes(req.query.author)) {
+                    results.push(b);
+                }
+            }
+            res.send(results);
+        })
+    }
+
+    searchByISBN(req, res, next) {
+        this.handler.requestBooks().then(books => {
+            let results: Book[] = [];
+            for (let b of books) {
+                if (b.isbn === parseInt(req.query.isbn)) {
                     results.push(b);
                 }
             }

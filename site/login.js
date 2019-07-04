@@ -1,5 +1,3 @@
-
-
 function login() {
     let xhttp = new XMLHttpRequest();
     let username = document.getElementById('username').value;
@@ -51,7 +49,7 @@ function checkLoginStatus() {
 
 function searchTitle() {
     let xhttp = new XMLHttpRequest();
-    let title = document.getElementById('title').value;
+    let title = document.getElementById('searchTitle').value;
 
     xhttp.open('GET', `http://localhost:3000/book/searchByTitle?title=${encodeURI(title)}`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -66,7 +64,7 @@ function searchTitle() {
 
 function searchAuthor() {
     let xhttp = new XMLHttpRequest();
-    let author = document.getElementById('author').value;
+    let author = document.getElementById('searchAuthor').value;
 
     xhttp.open('GET', `http://localhost:3000/book/searchByAuthor?author=${encodeURI(author)}`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -75,6 +73,20 @@ function searchAuthor() {
         outputToHtml(xhttp.responseText);
     };
 
+
+    xhttp.send();
+}
+
+function searchISBN() {
+    let xhttp = new XMLHttpRequest();
+    let isbn = document.getElementById('searchISBN').value;
+
+    xhttp.open('GET', `http://localhost:3000/book/searchByISBN?isbn=${encodeURI(isbn)}`, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+
+    xhttp.onreadystatechange = function () {
+        outputToHtml(xhttp.responseText);
+    };
 
     xhttp.send();
 }
@@ -107,7 +119,7 @@ function allBooks() {
     xhttp.send();
 }
 
-function addBook(){
+function addBook() {
     let xhttp = new XMLHttpRequest();
 
     let isbn = document.getElementById('addISBN').value;
@@ -115,15 +127,19 @@ function addBook(){
     let author = document.getElementById('addAuthor').value;
     let catalogue = document.getElementById('addCatalogue').value;
 
-    xhttp.open('POST', `http://localhost:3000/book/addBook?isbn=${encodeURI(isbn)}&title=${encodeURI(title)}&author=${encodeURI(author)}&catalogue=${encodeURI(catalogue)}`, true);
+    xhttp.open('POST', `http://localhost:3000/book/addBook`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
     xhttp.onreadystatechange = function () {
         outputToHtml(xhttp.responseText);
     };
 
-
-    xhttp.send();
+    xhttp.send({
+        isbn: isbn,
+        title: title,
+        author: author,
+        catalogue: catalogue
+    })
 }
 
 function outputToHtml(dataJSONString) {
