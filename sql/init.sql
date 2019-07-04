@@ -22,7 +22,7 @@ CREATE TABLE bookInfo
 
 CREATE TABLE books
 (
-    bookID SERIAL,
+    bookID int NOT NULL,
     ISBN   int,
     PRIMARY KEY (bookId),
     FOREIGN KEY (ISBN) REFERENCES bookInfo (ISBN)
@@ -106,3 +106,13 @@ WHERE ISBN = 1234123;
 SELECT *
 FROM books
 WHERE ISBN = 1234123;
+
+SELECT b.bookID,
+       b.ISBN,
+       bi.title,
+       bi.author,
+       bi.catalogue
+FROM books b
+         LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN
+         LEFT JOIN borrowed br on b.bookID = br.bookID
+         LEFT JOIN users u on br.userID = u.userID;

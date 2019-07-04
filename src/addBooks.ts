@@ -9,16 +9,16 @@ let db = pgpDB("postgres://bookish:bookish@localhost:5432/bookish");
 fs.createReadStream("./data/books.csv")
     .pipe(csv())
     .on("data", data => {
-        if (data.isbn) {
+        if (data.isbn && data.isbn != "<null>") {
             // console.log(data);
             // console.log(`INSERT INTO bookInfo VALUES(${parseInt(data.isbn)},'${data.title}','${data.author}','${data.book_category_id}')`)
 
-            db.one(`INSERT INTO bookInfo VALUES(${parseInt(data.isbn)},'${data.title}','${data.author}','${data.book_category_id}')`)
-                .then(data => {
-                    console.log(data);
-                }).catch(error => {
-                console.log('ERROR:', error); // print error;
-            });
+            // db.one(`INSERT INTO bookInfo VALUES(${parseInt(data.isbn)},'${data.title}','${data.author}','${data.book_category_id}')`)
+            //     .then(data => {
+            //         console.log(data);
+            //     }).catch(error => {
+            //     console.log('ERROR:', error); // print error;
+            // });
 
             db.one(`INSERT INTO books VALUES (${data.id}, ${data.isbn})`)
                 .then(data => {

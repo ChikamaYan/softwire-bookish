@@ -61,8 +61,8 @@ export class BookController {
     }
 
     addBook(req, res, next) {
-        this.handler.addBook(parseInt(req.body.isbn), req.body.title, req.body.author, req.body.catalogue).then(() => {
-            res.send("Successfully add the book!");
+        this.handler.addBook(parseInt(req.body.isbn), req.body.title, req.body.author, req.body.catalogue).then((book) => {
+            res.send(book);
         });
     }
 

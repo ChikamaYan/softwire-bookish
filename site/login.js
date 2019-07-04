@@ -153,9 +153,11 @@ function addBook() {
     xhttp.open('POST', `http://localhost:3000/book/addBook`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
-    responseHTML = `<img src='https://barcode.tec-it.com/barcode.ashx?data=${isbn}%0A&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0'/>`;
 
     xhttp.onreadystatechange = function () {
+        let book = JSON.parse(xhttp.responseText);
+        let responseHTML = `<img src='https://barcode.tec-it.com/barcode.ashx?data=${book[0].bookid}%0A&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0'/>`;
+
         outputToHtml(responseHTML);
     };
 
@@ -193,7 +195,7 @@ function outputToHtml(dataJSONString) {
             b.returndate = 'Not borrowed'
         }
 
-        table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue,b.name, b.returndate));
+        table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue, b.name, b.returndate));
         // let subEl = createEltWithText("p", JSON.stringify(b));
         // el.appendChild(subEl);
     }
