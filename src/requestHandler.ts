@@ -54,4 +54,18 @@ export class RequestHandler {
         }
 
     }
+
+    async addBook(isbn: number, title: string, author: string, catalogue: string): Promise<void> {
+
+        await this.db.one(`INSERT INTO bookInfo VALUES(${isbn},'${title}','${author}','${catalogue}')`)
+            .catch(error => {
+                console.log('ERROR:', error);
+            });
+
+        await this.db.one(`INSERT INTO books(isbn) VALUES (${isbn})`)
+            .catch(error => {
+                console.log('ERROR:', error);
+            });
+        return;
+    }
 }

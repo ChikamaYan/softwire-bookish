@@ -22,7 +22,7 @@ CREATE TABLE bookInfo
 
 CREATE TABLE books
 (
-    bookID int NOT NULL,
+    bookID SERIAL,
     ISBN   int,
     PRIMARY KEY (bookId),
     FOREIGN KEY (ISBN) REFERENCES bookInfo (ISBN)
@@ -61,7 +61,9 @@ INSERT INTO borrowed
 VALUES (1674, 20, TO_DATE('23/06/2019', 'DD/MM/YYYY'));
 
 SELECT b.bookID, b.ISBN, bi.title, bi.author, bi.catalogue, br.userID, br.returnDate
-FROM books b LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN LEFT JOIN borrowed br on b.bookID = br.bookID;
+FROM books b
+         LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN
+         LEFT JOIN borrowed br on b.bookID = br.bookID;
 
 SELECT *
 FROM bookInfo;
@@ -69,5 +71,27 @@ FROM bookInfo;
 SELECT *
 FROM books;
 
-DELETE FROM books
-WHERE ISBN ISNULL
+DELETE
+FROM books
+WHERE ISBN ISNULL;
+
+DELETE
+FROM bookInfo
+WHERE ISBN ISNULL;
+
+DROP TABLE books;
+DROP TABLE borrowed;
+
+INSERT INTO books(ISBN)
+VALUES (1430234709);
+
+INSERT INTO bookInfo
+VALUES (1261335, 'The Best JAVA Book', 'Soma', '4');
+
+SELECT *
+FROM bookInfo
+WHERE ISBN = 1234123;
+
+SELECT *
+FROM books
+WHERE ISBN = 1234123;

@@ -1,11 +1,4 @@
-function outputWelcome(username) {
-    let el = document.getElementById("loginMessage");
-    if (!username) {
-        el.innerHTML = "Login failure!";
-        return;
-    }
-    el.innerHTML = `Welcome! ${username} `;
-}
+
 
 function login() {
     let xhttp = new XMLHttpRequest();
@@ -17,14 +10,23 @@ function login() {
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
     xhttp.onreadystatechange = function () {
-        outputWelcome(xhttp.responseText);
+        let username = xhttp.responseText;
+        let el = document.getElementById("loginMessage");
+        if (!username) {
+            el.innerHTML = "Login failure!";
+            return;
+        }
+        el.innerHTML = `Welcome! ${username} `;
+
     };
 
     xhttp.send();
 }
 
 function logout() {
-    outputWelcome("Logged out!");
+    let el = document.getElementById("loginMessage");
+
+    el.innerHTML = `Logged out!`;
     document.cookie = "jwt= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 }
 
@@ -36,7 +38,13 @@ function checkLoginStatus() {
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
     xhttp.onreadystatechange = function () {
-        outputWelcome(xhttp.responseText === "Unauthorized" ? null : xhttp.responseText);
+        let username = xhttp.responseText;
+        let el = document.getElementById("loginMessage");
+        if (!username || username === "Unauthorized") {
+            el.innerHTML = "Not logged in";
+            return;
+        }
+        el.innerHTML = `Welcome! ${username} `;
     };
     xhttp.send();
 }
@@ -99,6 +107,25 @@ function allBooks() {
     xhttp.send();
 }
 
+function addBook(){
+    let xhttp = new XMLHttpRequest();
+
+    let isbn = document.getElementById('addISBN').value;
+    let title = document.getElementById('addTitle').value;
+    let author = document.getElementById('addAuthor').value;
+    let catalogue = document.getElementById('addCatalogue').value;
+
+    xhttp.open('POST', `http://localhost:3000/book/addBook?isbn=${encodeURI(isbn)}&title=${encodeURI(title)}&author=${encodeURI(author)}&catalogue=${encodeURI(catalogue)}`, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+
+    xhttp.onreadystatechange = function () {
+        outputToHtml(xhttp.responseText);
+    };
+
+
+    xhttp.send();
+}
+
 function outputToHtml(dataJSONString) {
     let data;
     let el = document.getElementById("result");
@@ -111,7 +138,7 @@ function outputToHtml(dataJSONString) {
     el.innerHTML = "";
 
     for (let b of data) {
-        let subEl = createEltWithText("p", JSON.stringify(b))
+        let subEl = createEltWithText("p", JSON.stringify(b));
         el.appendChild(subEl);
     }
 }

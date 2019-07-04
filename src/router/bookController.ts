@@ -4,6 +4,7 @@ import {CookieHandler} from "./cookieHandler";
 
 import * as passport from "passport";
 import {Book} from "../book";
+
 let SECRET_KEY = "perfect key";
 
 export class BookController {
@@ -20,6 +21,7 @@ export class BookController {
         this.router.get("/borrowedBook", passport.authenticate('jwt', {session: false}), this.getBorrowedBook.bind(this));
         this.router.get("/searchByTitle", passport.authenticate('jwt', {session: false}), this.searchByTitle.bind(this));
         this.router.get("/searchByAuthor", passport.authenticate('jwt', {session: false}), this.searchByAuthor.bind(this));
+        this.router.post("/addBook", passport.authenticate('jwt', {session: false}), this.addBook.bind(this));
 
     }
 
@@ -33,6 +35,12 @@ export class BookController {
             }
             res.send(results);
         })
+    }
+
+    addBook(req, res, next) {
+        this.handler.addBook(parseInt(req.query.isbn), req.query.title, req.query.author, req.query.catalogue).then(() => {
+            res.send("Successfully add the book!");
+        });
     }
 
     searchByAuthor(req, res, next) {

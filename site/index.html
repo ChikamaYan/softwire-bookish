@@ -14,8 +14,8 @@
     <div class="login">
         <input class="username" id="username" placeholder="Username">
         <input class="password" id="password" placeholder="Password">
-        <input class="submit" type="button" id="login" value="Submit" onclick="login()">
-        <input class="submit" type="button" id="logout" value="Submit" onclick="logout()">
+        <input class="submit" type="button" id="login" value="Login" onclick="login()">
+        <input class="submit" type="button" id="logout" value="Logout" onclick="logout()">
     </div>
     <div>
         <h1 id="loginMessage">
@@ -31,11 +31,19 @@
     </div>
 
     <div>
-        <input class="title" id="title" placeholder="Title">
+        <input class="" id="title" placeholder="Title">
         <input class="submit" type="button" id="titleList" value="Submit" onclick="searchTitle()">
         <br>
-        <input class="title" id="author" placeholder="Author">
+        <input class="" id="author" placeholder="Author">
         <input class="submit" type="button" id="authorList" value="Submit" onclick="searchAuthor()">
+    </div>
+
+    <div>
+        <input class="" id="addISBN" placeholder="ISBN">
+        <input class="" id="addTitle" placeholder="Title">
+        <input class="" id="addAuthor" placeholder="Author">
+        <input class="" id="addCatalogue" placeholder="Catalogue">
+        <input class="submit" type="button" id="addBook" value="Add Book" onclick="addBook()">
     </div>
 
     <div class="result">
