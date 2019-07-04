@@ -186,11 +186,11 @@ function outputToHtml(dataJSONString) {
     for (let b of data) {
 
         if (!b.name) {
-            b.name = 'The book is not borrowed'
+            b.name = 'Not borrowed'
         }
 
-        if (!b.returndate) {
-            b.returndate = 'The book is not borrowed'
+        if (!b.returndate || b.returndate === "Invalid date") {
+            b.returndate = 'Not borrowed'
         }
 
         table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue,b.name, b.returndate));
