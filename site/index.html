@@ -47,6 +47,10 @@
             <input class="" id="searchISBN" placeholder="ISBN">
             <input class="submit" type="button" id="ISBNList" value="Search" onclick="searchISBN()">
         </p>
+        <p>Search books by catalogue:
+            <input class="" id="searchCatalogue" placeholder="Catalogue">
+            <input class="submit" type="button" id="catalogList" value="Search" onclick="searchCatalogue()">
+        </p>
     </div>
 
     <div>
@@ -58,7 +62,10 @@
             <input class="submit" type="button" id="addBook" value="Add Book" onclick="addBook()">
         </p>
     </div>
-
+    <div>
+        <table id="barcode">
+        </table>
+    </div>
     <div id="result">
 
     </div>

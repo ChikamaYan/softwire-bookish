@@ -119,6 +119,21 @@ function allBooks() {
     xhttp.send();
 }
 
+function searchCatalogue() {
+    let xhttp = new XMLHttpRequest();
+    let catalogue = document.getElementById('searchCatalogue').value;
+
+    xhttp.open('GET', `http://localhost:3000/book/searchByCatalogue?catalogue=${catalogue}`, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+
+    xhttp.onreadystatechange = function () {
+        outputToHtml(xhttp.responseText);
+    };
+
+
+    xhttp.send();
+}
+
 function addBook() {
     let xhttp = new XMLHttpRequest();
 
@@ -138,8 +153,10 @@ function addBook() {
     xhttp.open('POST', `http://localhost:3000/book/addBook`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
+    responseHTML = `<img src='https://barcode.tec-it.com/barcode.ashx?data=${isbn}%0A&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0'/>`;
+
     xhttp.onreadystatechange = function () {
-        outputToHtml(xhttp.responseText);
+        outputToHtml(responseHTML);
     };
 
 
@@ -167,6 +184,15 @@ function outputToHtml(dataJSONString) {
         "Catalogue", "Borrowed By", "Due Date"));
 
     for (let b of data) {
+
+        if (!b.name) {
+            b.name = 'The book is not borrowed'
+        }
+
+        if (!b.returndate) {
+            b.returndate = 'The book is not borrowed'
+        }
+
         table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue,b.name, b.returndate));
         // let subEl = createEltWithText("p", JSON.stringify(b));
         // el.appendChild(subEl);

@@ -23,6 +23,7 @@ export class BookController {
         this.router.get("/searchByTitle", auth, this.searchByTitle.bind(this));
         this.router.get("/searchByAuthor", auth, this.searchByAuthor.bind(this));
         this.router.get("/searchByISBN", auth, this.searchByISBN.bind(this));
+        this.router.get("/searchByCatalogue", auth, this.searchByCatalogue.bind(this));
         this.router.post("/addBook", auth, this.addBook.bind(this));
 
     }
@@ -32,6 +33,18 @@ export class BookController {
             let results: Book[] = [];
             for (let b of books) {
                 if (b.title.includes(req.query.title)) {
+                    results.push(b);
+                }
+            }
+            res.send(results);
+        })
+    }
+
+    searchByCatalogue(req, res, next) {
+        this.handler.requestBooks().then(books => {
+            let results: Book[] = [];
+            for (let b of books) {
+                if (b.catalogue === req.query.catalogue) {
                     results.push(b);
                 }
             }
