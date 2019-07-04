@@ -14,7 +14,7 @@ function login() {
             el.innerHTML = "Login failure!";
             return;
         }
-        el.innerHTML = `Welcome! ${username} `;
+        el.innerHTML = `Welcome ${username}!`;
 
     };
 
@@ -42,7 +42,7 @@ function checkLoginStatus() {
             el.innerHTML = "Not logged in";
             return;
         }
-        el.innerHTML = `Welcome! ${username} `;
+        el.innerHTML = `Welcome ${username}! `;
     };
     xhttp.send();
 }
@@ -127,6 +127,14 @@ function addBook() {
     let author = document.getElementById('addAuthor').value;
     let catalogue = document.getElementById('addCatalogue').value;
 
+    console.log({
+        isbn: isbn,
+        title: title,
+        author: author,
+        catalogue: catalogue
+    });
+
+
     xhttp.open('POST', `http://localhost:3000/book/addBook`, true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
 
@@ -134,29 +142,49 @@ function addBook() {
         outputToHtml(xhttp.responseText);
     };
 
-    xhttp.send({
+
+    xhttp.send(JSON.stringify({
         isbn: isbn,
         title: title,
         author: author,
         catalogue: catalogue
-    })
+    }));
 }
 
 function outputToHtml(dataJSONString) {
     let data;
     let el = document.getElementById("result");
+    el.innerHTML = "";
     try {
         data = JSON.parse(dataJSONString);
     } catch (e) {
         el.innerHTML = dataJSONString;
         return;
     }
-    el.innerHTML = "";
+
+    let table = document.createElement("table");
+    table.appendChild(createTableRow("Book ID", "ISBN", "Title", "Author",
+        "Catalogue", "Borrowed By", "Due Date"));
 
     for (let b of data) {
-        let subEl = createEltWithText("p", JSON.stringify(b));
-        el.appendChild(subEl);
+        table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue,b.name, b.returndate));
+        // let subEl = createEltWithText("p", JSON.stringify(b));
+        // el.appendChild(subEl);
     }
+
+    el.appendChild(table);
+}
+
+function createTableRow(id, isbn, title, author, catalogue, borrowedBy, dueDate) {
+    let row = document.createElement("tr");
+    row.appendChild(createEltWithText("th", id));
+    row.appendChild(createEltWithText("th", isbn));
+    row.appendChild(createEltWithText("th", title));
+    row.appendChild(createEltWithText("th", author));
+    row.appendChild(createEltWithText("th", catalogue));
+    row.appendChild(createEltWithText("th", borrowedBy));
+    row.appendChild(createEltWithText("th", dueDate));
+    return row;
 }
 
 

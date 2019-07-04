@@ -91,7 +91,7 @@ export class BookController {
             let borrowedBooks: Book[] = [];
             this.handler.requestBooks().then(books => {
                 for (let b of books) {
-                    if (b.borrowedby === userid) {
+                    if (b.userid === userid) {
                         borrowedBooks.push(b);
                     }
                 }

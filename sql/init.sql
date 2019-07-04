@@ -60,16 +60,27 @@ VALUES (20, 'soma');
 INSERT INTO borrowed
 VALUES (1674, 20, TO_DATE('23/06/2019', 'DD/MM/YYYY'));
 
-SELECT b.bookID, b.ISBN, bi.title, bi.author, bi.catalogue, br.userID, br.returnDate
+SELECT b.bookID,
+       b.ISBN,
+       bi.title,
+       bi.author,
+       bi.catalogue,
+       br.userID,
+       u.name,
+       br.returnDate
 FROM books b
          LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN
-         LEFT JOIN borrowed br on b.bookID = br.bookID;
+         LEFT JOIN borrowed br on b.bookID = br.bookID
+         LEFT JOIN users u on br.userID = u.userID;
 
 SELECT *
 FROM bookInfo;
 
 SELECT *
 FROM books;
+
+SELECT *
+FROM borrowed;
 
 DELETE
 FROM books

@@ -4,6 +4,7 @@ const pgpDB = pgp();
 
 import {Book} from "./book";
 import {User} from "./user";
+import {AnyAaaaRecord} from "dns";
 
 export class RequestHandler {
     db;
@@ -28,33 +29,56 @@ export class RequestHandler {
 
     async requestBooks(): Promise<Book[]> {
         try {
-            let books: Book[] = [];
+            // const bookTitle = "LOTR";// let books: Book[] = [];
+            //
+            // let query = "SELECT b.bookID,\n" +
+            //     "       b.ISBN,\n" +
+            //     "       bi.title,\n" +
+            //     "       bi.author,\n" +
+            //     "       bi.catalogue,\n" +
+            //     "       br.userID,\n" +
+            //     "       u.name,\n" +
+            //     "       br.returnDate\n" +
+            //     "FROM books b\n" +
+            //     "         LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN\n" +
+            //     "         LEFT JOIN borrowed br on b.bookID = br.bookID\n" +
+            //     "         LEFT JOIN users u on br.userID = u.userID \n" +
+            //     "WHERE bi.title = @title";
+            //
+            // this.db.query(query, bookTitle);
 
-            const data = await this.db.any('SELECT b.bookID, b.ISBN, bi.title, bi.author, bi.catalogue, br.userID, br.returnDate\n' +
-                'FROM books b LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN LEFT JOIN borrowed br on b.bookID = br.bookID', [true]);
+            return await this.db.any("SELECT b.bookID,\n" +
+                "       b.ISBN,\n" +
+                "       bi.title,\n" +
+                "       bi.author,\n" +
+                "       bi.catalogue,\n" +
+                "       br.userID,\n" +
+                "       u.name,\n" +
+                "       br.returnDate\n" +
+                "FROM books b\n" +
+                "         LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN\n" +
+                "         LEFT JOIN borrowed br on b.bookID = br.bookID\n" +
+                "         LEFT JOIN users u on br.userID = u.userID;", [true]) as Book[];
 
+            // for (let b of data) {
+            //     let book: Book = {
+            //         bookid: b.bookid,
+            //         isbn: b.isbn,
+            //         title: b.title,
+            //         author: b.author,
+            //         catalogue: b.catalogue,
+            //         userid: b.userid,
+            //         username: b.username,
+            //         returndate: b.returndate
+            //     };
+            //
+            //     books.push(book);
+            // }
 
-            for (let b of data) {
-                let book: Book = {
-                    bookid: b.bookid,
-                    isbn: b.isbn,
-                    title: b.title,
-                    author: b.author,
-                    catalogue: b.catalogue,
-                    borrowedby: b.userid,
-                    returndate: b.returndate
-                };
-
-                books.push(book);
-            }
-
-            return books;
         } catch (e) {
             console.log(e);
         }
-
     }
-
     async addBook(isbn: number, title: string, author: string, catalogue: string): Promise<void> {
 
         await this.db.one(`INSERT INTO bookInfo VALUES(${isbn},'${title}','${author}','${catalogue}')`)

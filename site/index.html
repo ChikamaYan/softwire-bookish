@@ -13,7 +13,7 @@
 <div class="main">
     <div class="login">
         <input class="username" id="username" placeholder="Username">
-        <input class="password" id="password" placeholder="Password">
+        <input class="password" id="password" placeholder="Password" type="password">
         <input class="submit" type="button" id="login" value="Login" onclick="login()">
         <input class="submit" type="button" id="logout" value="Logout" onclick="logout()">
     </div>
@@ -25,34 +25,42 @@
     </div>
 
     <div class="endpoints">
-        <input type="button" value="book/allBook" onclick="allBooks()">
-        <input type="button" value="book/borrowedBook"
-               onclick="borrowedBooks()"><br>
-    </div>
-
-    <div>
-        <input class="" id="searchTitle" placeholder="Title">
-        <input class="submit" type="button" id="titleList" value="Search" onclick="searchTitle()">
-        <br>
-        <input class="" id="searchAuthor" placeholder="Author">
-        <input class="submit" type="button" id="authorList" value="Search" onclick="searchAuthor()">
-
-        <input class="" id="searchISBN" placeholder="ISBN">
-        <input class="submit" type="button" id="ISBNList" value="Search" onclick="searchISBN()">
-    </div>
-
-    <div>
-        <input class="" id="addISBN" placeholder="ISBN">
-        <input class="" id="addTitle" placeholder="Title">
-        <input class="" id="addAuthor" placeholder="Author">
-        <input class="" id="addCatalogue" placeholder="Catalogue">
-        <input class="submit" type="button" id="addBook" value="Add Book" onclick="addBook()">
-    </div>
-
-    <div class="result">
-        <p id="result">
-            No result yet
+        <p>See a list of all books:
+            <input type="button" value="book/allBook" onclick="allBooks()">
         </p>
+        <p>See a list of books you borrowed:
+            <input type="button" value="book/borrowedBook"
+                   onclick="borrowedBooks()">
+        </p>
+    </div>
+
+    <div>
+        <p>Search books by title:
+            <input class="" id="searchTitle" placeholder="Title">
+            <input class="submit" type="button" id="titleList" value="Search" onclick="searchTitle()">
+        </p>
+        <p>Search books by author:
+            <input class="" id="searchAuthor" placeholder="Author">
+            <input class="submit" type="button" id="authorList" value="Search" onclick="searchAuthor()">
+        </p>
+        <p>Search books by ISBN:
+            <input class="" id="searchISBN" placeholder="ISBN">
+            <input class="submit" type="button" id="ISBNList" value="Search" onclick="searchISBN()">
+        </p>
+    </div>
+
+    <div>
+        <p>Add a book to the library:
+            <input class="" id="addISBN" placeholder="ISBN">
+            <input class="" id="addTitle" placeholder="Title">
+            <input class="" id="addAuthor" placeholder="Author">
+            <input class="" id="addCatalogue" placeholder="Catalogue">
+            <input class="submit" type="button" id="addBook" value="Add Book" onclick="addBook()">
+        </p>
+    </div>
+
+    <div id="result">
+
     </div>
 </div>
 </body>
