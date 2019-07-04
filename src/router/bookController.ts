@@ -1,6 +1,7 @@
 import {Router} from "express";
 import {RequestHandler} from "../requestHandler";
 import {CookieHandler} from "./cookieHandler";
+import {BookView} from "../view/bookView";
 
 import * as passport from "passport";
 import {Book} from "../book";
@@ -11,9 +12,13 @@ export class BookController {
     router: any;
     private handler: RequestHandler;
     private cookieHandler: CookieHandler;
+    private bookService;
+    private bookInfoService;
 
-    constructor(handler) {
+    constructor(handler, bookService) {
         this.handler = handler;
+        this.bookService = bookService;
+
         this.cookieHandler = new CookieHandler();
         this.cookieHandler.setStrategy(passport, SECRET_KEY);
         this.router = Router();
@@ -91,8 +96,23 @@ export class BookController {
     }
 
     getAllBook(req, res, next) {
-        this.handler.requestBooks().then(data => {
-            res.send(JSON.stringify(data));
+        this.bookService.getAllBooks().then(books => {
+            let data: BookView[] = [];
+            let promises = [];
+            for (let b of books) {
+                promises.push(this.bookService.getBookInfo(b.dataValues.ISBN).then(info => {
+                    data.push({
+                        bookID: b.dataValues.bookID,
+                        ISBN: b.dataValues.ISBN,
+                        title: info[0].dataValues.title,
+                        author: info[0].dataValues.author,
+                        catalogue: info[0].dataValues.catalogue
+                    } as BookView)
+                }));
+            }
+            Promise.all(promises).then(() => {
+                res.send(JSON.stringify(data));
+            });
         });
     }
 
@@ -106,7 +126,7 @@ export class BookController {
                 }
             }
             if (!userid) {
-                res.send("No book borrowed!");
+                res.send("No user borrowed!");
                 return;
             }
             let borrowedBooks: Book[] = [];

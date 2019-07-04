@@ -195,7 +195,7 @@ function outputToHtml(dataJSONString) {
             b.returndate = 'Not borrowed'
         }
 
-        table.appendChild(createTableRow(b.bookid, b.isbn, b.title, b.author, b.catalogue, b.name, b.returndate));
+        table.appendChild(createTableRow(b.bookID, b.ISBN, b.title, b.author, b.catalogue, b.name, b.returndate));
         // let subEl = createEltWithText("p", JSON.stringify(b));
         // el.appendChild(subEl);
     }

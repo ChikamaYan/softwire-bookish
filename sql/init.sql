@@ -46,9 +46,9 @@ CREATE TABLE borrowed
 );
 
 INSERT INTO bookInfo
-VALUES (123456, 'test book title', 'walter', 'test');
+VALUES (123456, 'test user title', 'walter', 'test');
 
-INSERT INTO bookInfo
+INSERT INTO bookInfos
 VALUES (123457, 'hello world', 'walter', 'test');
 
 INSERT INTO books
@@ -74,7 +74,7 @@ FROM books b
          LEFT JOIN users u on br.userID = u.userID;
 
 SELECT *
-FROM bookInfo;
+FROM bookinfos;
 
 SELECT *
 FROM books;
@@ -92,6 +92,8 @@ WHERE ISBN ISNULL;
 
 DROP TABLE books;
 DROP TABLE borrowed;
+DROP TABLE users;
+DROP TABLE bookInfo;
 
 INSERT INTO books(ISBN)
 VALUES (1430234709);
@@ -100,12 +102,10 @@ INSERT INTO bookInfo
 VALUES (1261335, 'The Best JAVA Book', 'Soma', '4');
 
 SELECT *
-FROM bookInfo
-WHERE ISBN = 1234123;
+FROM bookinfos;
 
 SELECT *
-FROM books
-WHERE ISBN = 1234123;
+FROM books;
 
 SELECT b.bookID,
        b.ISBN,
