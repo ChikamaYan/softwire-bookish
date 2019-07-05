@@ -5,6 +5,7 @@ const pgpDB = pgp();
 
 import {Book} from "../book";
 import {User} from "../user";
+import {Model} from "sequelize";
 
 export class BookService {
     private bookRepo: any;
@@ -15,12 +16,16 @@ export class BookService {
         this.bookInfoRepo = bookInfoRepo;
     }
 
-    getAllBooks(): Promise<any> {
+    getAllBooks(): Promise<Model[]> {
         return this.bookRepo.getAllBooks();
     }
 
-    getBookInfo(isbn): Promise<any> {
-        return this.bookInfoRepo.getInfo(isbn);
+    getBookInfoByISBN(isbn): Promise<Model[]> {
+        return this.bookInfoRepo.getInfoByISBN(isbn);
+    }
+
+    getBookByISBN(isbn): Promise<Model[]> {
+        return this.bookRepo.getBookByISBN(isbn);
     }
 
     // async addBook(isbn: number, title: string, author: string, catalogue: string): Promise<Book> {

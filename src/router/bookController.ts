@@ -2,9 +2,11 @@ import {Router} from "express";
 import {RequestHandler} from "../requestHandler";
 import {CookieHandler} from "./cookieHandler";
 import {BookView} from "../view/bookView";
+import {BookService} from "../service/bookService";
 
 import * as passport from "passport";
 import {Book} from "../book";
+import {promises} from "fs";
 
 let SECRET_KEY = "perfect key";
 
@@ -12,8 +14,7 @@ export class BookController {
     router: any;
     private handler: RequestHandler;
     private cookieHandler: CookieHandler;
-    private bookService;
-    private bookInfoService;
+    private bookService: BookService;
 
     constructor(handler, bookService) {
         this.handler = handler;
@@ -32,6 +33,7 @@ export class BookController {
         this.router.post("/addBook", auth, this.addBook.bind(this));
 
     }
+
 
     searchByTitle(req, res, next) {
         this.handler.requestBooks().then(books => {
@@ -84,15 +86,36 @@ export class BookController {
     }
 
     searchByISBN(req, res, next) {
-        this.handler.requestBooks().then(books => {
-            let results: Book[] = [];
+        this.bookService.getBookByISBN(req.query.isbn).then( books =>{
+            let data: BookView[] = [];
+            let promises = [];
             for (let b of books) {
-                if (b.isbn === parseInt(req.query.isbn)) {
-                    results.push(b);
-                }
+                promises.push(this.bookService.getBookInfoByISBN(b.dataValues.ISBN).then(info => {
+                    data.push({
+                        bookID: b.dataValues.bookID,
+                        ISBN: b.dataValues.ISBN,
+                        title: info[0].dataValues.title,
+                        author: info[0].dataValues.author,
+                        catalogue: info[0].dataValues.catalogue
+                    } as BookView);
+                }));
             }
-            res.send(results);
+            Promise.all(promises).then(() => {
+                res.send(JSON.stringify(data));
+            });
         })
+
+
+        //
+        // this.handler.requestBooks().then(books => {
+        //     let results: Book[] = [];
+        //     for (let b of books) {
+        //         if (b.isbn === parseInt(req.query.isbn)) {
+        //             results.push(b);
+        //         }
+        //     }
+        //     res.send(results);
+        // })
     }
 
     getAllBook(req, res, next) {
@@ -100,7 +123,7 @@ export class BookController {
             let data: BookView[] = [];
             let promises = [];
             for (let b of books) {
-                promises.push(this.bookService.getBookInfo(b.dataValues.ISBN).then(info => {
+                promises.push(this.bookService.getBookInfoByISBN(b.dataValues.ISBN).then(info => {
                     data.push({
                         bookID: b.dataValues.bookID,
                         ISBN: b.dataValues.ISBN,

@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import {Model} from "sequelize";
 
 export class BookInfoRepo {
     private sql: any;
@@ -25,10 +26,26 @@ export class BookInfoRepo {
         this.bookInfo.sync();
     }
 
-    getInfo(isbn): Promise<any> {
+    getInfoByISBN(isbn): Promise<Model[]> {
         return this.bookInfo.findAll({
             where: {
                 ISBN: isbn
+            }
+        });
+    }
+
+    getInfoByTitle(title): Promise<Model[]> {
+        return this.bookInfo.findAll({
+            where: {
+                title: title
+            }
+        });
+    }
+
+    getInfoByAuthor(author): Promise<Model[]> {
+        return this.bookInfo.findAll({
+            where: {
+                author: author
             }
         });
     }
