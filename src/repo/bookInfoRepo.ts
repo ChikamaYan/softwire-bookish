@@ -1,32 +1,43 @@
-import * as Sequelize from "sequelize";
-import {Model} from "sequelize";
+import {Sequelize, Model, DataTypes, BuildOptions} from 'sequelize';
+import {type} from "os";
+
+export interface BookInfo extends Model {
+    readonly ISBN: number,
+    readonly title: string,
+    readonly author: string,
+    readonly catalogue: string
+}
+
+type BookInfoStatic = typeof Model &{
+    new (values?: object, options?: BuildOptions): BookInfo;
+}
 
 export class BookInfoRepo {
     private sql: any;
     bookInfo: any;
 
     constructor(url) {
-        this.sql = new Sequelize.Sequelize(url);
-        this.bookInfo = this.sql.define("bookinfos", {
+        this.sql = new Sequelize(url);
+        this.bookInfo = <BookInfoStatic>this.sql.define("bookinfos", {
             ISBN: {
-                type: Sequelize.INTEGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 primaryKey: true
             },
             title: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             author: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             },
             catalogue: {
-                type: Sequelize.STRING
+                type: DataTypes.STRING
             }
         });
         this.bookInfo.sync();
     }
 
-    getInfoByISBN(isbn): Promise<Model[]> {
+    getInfoByISBN(isbn): Promise<BookInfo[]> {
         return this.bookInfo.findAll({
             where: {
                 ISBN: isbn
@@ -34,7 +45,7 @@ export class BookInfoRepo {
         });
     }
 
-    getInfoByTitle(title): Promise<Model[]> {
+    getInfoByTitle(title): Promise<BookInfo[]> {
         return this.bookInfo.findAll({
             where: {
                 title: title
@@ -42,7 +53,15 @@ export class BookInfoRepo {
         });
     }
 
-    getInfoByAuthor(author): Promise<Model[]> {
+    getInfoByCatalogue(catalogue): Promise<BookInfo[]> {
+        return this.bookInfo.findAll({
+            where: {
+                catalogue: catalogue
+            }
+        });
+    }
+
+    getInfoByAuthor(author): Promise<BookInfo[]> {
         return this.bookInfo.findAll({
             where: {
                 author: author

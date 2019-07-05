@@ -98,14 +98,14 @@ DROP TABLE bookInfo;
 INSERT INTO books(ISBN)
 VALUES (1430234709);
 
-INSERT INTO bookInfo
-VALUES (1261335, 'The Best JAVA Book', 'Soma', '4');
+INSERT INTO bookInfos
+VALUES (1261335, 'The Best JAVA BookType', 'Soma', '4');
 
 SELECT *
 FROM bookinfos;
 
 SELECT *
-FROM books;
+FROM borroweds;
 
 SELECT b.bookID,
        b.ISBN,

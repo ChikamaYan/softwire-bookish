@@ -155,8 +155,7 @@ function addBook() {
 
 
     xhttp.onreadystatechange = function () {
-        let book = JSON.parse(xhttp.responseText);
-        let responseHTML = `<img src='https://barcode.tec-it.com/barcode.ashx?data=${book[0].bookid}%0A&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0'/>`;
+        let responseHTML = `<img src='https://barcode.tec-it.com/barcode.ashx?data=${xhttp.responseText}%0A&code=Code128&multiplebarcodes=false&translate-esc=false&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=%23000000&bgcolor=%23ffffff&qunit=Mm&quiet=0'/>`;
 
         outputToHtml(responseHTML);
     };
@@ -182,7 +181,7 @@ function outputToHtml(dataJSONString) {
     }
 
     let table = document.createElement("table");
-    table.appendChild(createTableRow("Book ID", "ISBN", "Title", "Author",
+    table.appendChild(createTableRow("BookType ID", "ISBN", "Title", "Author",
         "Catalogue", "Borrowed By", "Due Date"));
 
     for (let b of data) {

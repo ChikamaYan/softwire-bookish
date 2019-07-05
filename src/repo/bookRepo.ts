@@ -1,33 +1,53 @@
-import * as Sequelize from "sequelize";
-import {Model} from "sequelize";
+import {Sequelize, Model, DataTypes, BuildOptions} from 'sequelize';
+
+export interface BookType extends Model {
+    readonly ISBN: number,
+    readonly bookID: number,
+}
+
+type BookStatic = typeof Model &{
+    new (values?: object, options?: BuildOptions): BookType;
+}
+
+export interface IBookRepo{
+
+}
 
 export class BookRepo {
     private sql: any;
     book: any;
 
     constructor(url) {
-        this.sql = new Sequelize.Sequelize(url);
-        this.book = this.sql.define("books", {
+        this.sql = new Sequelize(url);
+        this.book = <BookStatic>this.sql.define("books", {
             bookID: {
-                type: Sequelize.INTEGER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 primaryKey: true
             },
             ISBN: {
-                type: Sequelize.INTEGER
+                type: DataTypes.INTEGER
             }
         });
         this.book.sync();
     }
 
-    getAllBooks(): Promise<Model[]> {
+    getAllBooks(): Promise<BookType[]> {
         return this.book.findAll();
     }
 
-    getBookByISBN(isbn): Promise<Model[]> {
+    getBookByISBN(isbn): Promise<BookType[]> {
         return this.book.findAll({
             where: {
                 ISBN: isbn
+            }
+        });
+    }
+
+    getBookByBookID(bookID): Promise<BookType> {
+        return this.book.findOne({
+            where: {
+                bookID: bookID
             }
         });
     }

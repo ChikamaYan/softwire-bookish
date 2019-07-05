@@ -1,14 +1,8 @@
-import * as pgp from "pg-promise";
-import * as moment from "moment";
-
-const pgpDB = pgp();
-
-import {Book} from "../book";
-import {User} from "../user";
-import {Model} from "sequelize";
+import {BookInfo} from "../repo/bookInfoRepo";
+import {BookType} from "../repo/bookRepo";
 
 export class BookService {
-    private bookRepo: any;
+    private bookRepo;
     private bookInfoRepo;
 
     constructor(bookRepo, bookInfoRepo) {
@@ -16,19 +10,44 @@ export class BookService {
         this.bookInfoRepo = bookInfoRepo;
     }
 
-    getAllBooks(): Promise<Model[]> {
+    getAllBooks(): Promise<BookType[]> {
         return this.bookRepo.getAllBooks();
     }
 
-    getBookInfoByISBN(isbn): Promise<Model[]> {
+    getBookInfoByISBN(isbn): Promise<BookInfo[]> {
         return this.bookInfoRepo.getInfoByISBN(isbn);
     }
 
-    getBookByISBN(isbn): Promise<Model[]> {
+    getBookInfoByTitle(title): Promise<BookInfo[]> {
+        return this.bookInfoRepo.getInfoByTitle(title);
+    }
+
+    getBookInfoByCatalogue(catalogue): Promise<BookInfo[]> {
+        return this.bookInfoRepo.getInfoByCatalogue(catalogue);
+    }
+
+    getBookInfoByAuthor(author): Promise<BookInfo[]> {
+        return this.bookInfoRepo.getInfoByAuthor(author);
+    }
+
+    getBookByISBN(isbn): Promise<BookType[]> {
         return this.bookRepo.getBookByISBN(isbn);
     }
 
-    // async addBook(isbn: number, title: string, author: string, catalogue: string): Promise<Book> {
+    getBookByBookID(bookID): Promise<BookType> {
+        return this.bookRepo.getBookByBookID(bookID);
+    }
+
+    async addBook(ISBN, title, author, catalogue): Promise<number> {
+        this.bookInfoRepo.create(ISBN, title, author, catalogue);
+        let ids = await this.bookRepo.getAllBooks();
+        ids = ids.map(i => parseInt(i.bookID));
+        let newId = Math.max.apply(Math, ids) + 1;
+        await this.bookRepo.create(newId, ISBN);
+        return newId;
+    }
+
+    // async addBook(isbn: number, title: string, author: string, catalogue: string): Promise<BookType> {
     //
     //     let ids = await this.db.any(
     //         "SELECT bookID\n" +
@@ -59,6 +78,6 @@ export class BookService {
     //         "FROM books b\n" +
     //         "         LEFT JOIN bookInfo bi on b.ISBN = bi.ISBN\n" +
     //         `WHERE b.bookID = ${newId}`, [true]
-    //     ) as Book;
+    //     ) as BookType;
     // }
 }

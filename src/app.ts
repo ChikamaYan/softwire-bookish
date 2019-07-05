@@ -8,6 +8,7 @@ import {BookInfoRepo} from "./repo/bookInfoRepo";
 import {BorrowedRepo} from "./repo/borrowedRepo";
 import {UserRepo} from "./repo/userRepo";
 import {BookService} from "./service/bookService";
+import {UserService} from "./service/userService";
 
 
 const app = express();
@@ -17,10 +18,12 @@ let handler = new RequestHandler(URL);
 
 let bookRepo = new BookRepo(URL);
 let bookInfoRepo = new BookInfoRepo(URL);
+let userRepo = new UserRepo(URL);
+let borrowedRepo = new BorrowedRepo(URL);
 
 let bookService = new BookService(bookRepo,bookInfoRepo);
-
-let bookRouter = new BookController(handler,bookService).router;
+let userService = new UserService(userRepo, borrowedRepo);
+let bookRouter = new BookController(handler,bookService, userService).router;
 
 
 app.use(bodyParser.json());

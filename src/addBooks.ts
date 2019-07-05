@@ -63,6 +63,9 @@
 //     console.log(data);
 // });
 
+import {UserRepo} from "./repo/userRepo";
+import {BorrowedRepo} from "./repo/borrowedRepo";
+
 const URL = "postgres://bookish:bookish@localhost:5432/bookish";
 
 import {BookInfoRepo} from "./repo/bookInfoRepo";
@@ -70,14 +73,26 @@ import {BookRepo} from "./repo/bookRepo";
 
 let bookInfo = new BookInfoRepo(URL);
 let book = new BookRepo(URL);
+let user = new UserRepo(URL);
+let borrowed = new BorrowedRepo(URL);
 
 bookInfo.bookInfo.create({
-    ISBN: 123457,
-    title: "hello world",
-    author: "walter",
-    catalogue: "1"
+    ISBN: 2222221,
+    title: "test2",
+    author: "soma",
+    catalogue: "2"
 }).then(() => {
-    book.create(1233, 123457);
+    book.create(2222, 2222221);
+}).then(() => {
+    user.user.create({
+        userID: 10,
+        username: "soma",
+    })
+}).then(() => {
+    borrowed.borrowed.create({
+        userID: 10,
+        bookID: 2222
+    })
 });
 
 
